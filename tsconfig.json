@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "jsx": "react",
+      "module": "commonjs",
+      "target": "es2018",
+      "declaration": true,
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "strict": true,
+      "esModuleInterop": true,
+    },
+    "include": [
+      "src/**/*"
+    ]
+  }
