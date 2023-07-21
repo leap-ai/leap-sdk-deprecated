@@ -13,6 +13,9 @@ const createModel_1 = require("./methods/Models/createModel");
 const deleteModel_1 = require("./methods/Models/deleteModel");
 const getModel_1 = require("./methods/Models/getModel");
 const listModels_1 = require("./methods/Models/listModels");
+const createMusicInferenceJob_1 = require("./methods/Music/createMusicInferenceJob");
+const getMusicInferenceJob_1 = require("./methods/Music/getMusicInferenceJob");
+const listMusicInferenceJobs_1 = require("./methods/Music/listMusicInferenceJobs");
 const archiveImageSample_1 = require("./methods/Samples/archiveImageSample");
 const getImageSample_1 = require("./methods/Samples/getImageSample");
 const listImageSamples_1 = require("./methods/Samples/listImageSamples");
@@ -84,6 +87,12 @@ class Leap {
          */
         this.fineTune = {
             // Models
+            /**
+             * Creates a new model. This is the first step in the fine-tuning process.
+             *
+             * @param input - The input parameters used when creating the model.
+             * @returns - The newly created model.
+             */
             createModel: async (input) => {
                 return (0, createModel_1.createModelService)({
                     apiKey: this.API_KEY,
@@ -178,6 +187,25 @@ class Leap {
                 return (0, getEditJob_1.getEditJobService)({
                     apiKey: this.API_KEY,
                     input,
+                });
+            },
+        };
+        this.music = {
+            submitMusicGenerationJob: async (input) => {
+                return (0, createMusicInferenceJob_1.createMusicInferenceJobService)({
+                    apiKey: this.API_KEY,
+                    input,
+                });
+            },
+            getMusicGenerationJob: async (input) => {
+                return (0, getMusicInferenceJob_1.getMusicInferenceJobService)({
+                    apiKey: this.API_KEY,
+                    input,
+                });
+            },
+            listMusicGenerationJobs: async () => {
+                return (0, listMusicInferenceJobs_1.listMusicInferenceJobService)({
+                    apiKey: this.API_KEY,
                 });
             },
         };

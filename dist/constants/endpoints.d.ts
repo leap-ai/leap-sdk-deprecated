@@ -67,5 +67,10 @@ export declare const LeapEndpoints: {
     getEditJob: Endpoint<{
         editId: string;
     }>;
+    createMusicInferenceJob: Endpoint<undefined>;
+    getMusicInferenceJobs: Endpoint<undefined>;
+    getSingleMusicInferenceJob: Endpoint<{
+        inferenceId: string;
+    }>;
 };
 export {};

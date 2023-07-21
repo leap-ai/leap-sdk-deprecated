@@ -1,31 +1,21 @@
-import { fetch } from "cross-fetch";
 import { LeapEndpoints } from "../../../constants/endpoints";
 import { LeapAPIError } from "../../../types/Error";
-import { LeapInferenceSchema } from "../../../types/schemas/Inference";
+import { LeapMusicSchema } from "../../../types/schemas/Music";
 
-export interface IListInferenceJobsInput {
-  modelId?: string;
-}
-
-export const listInferenceJobService = async ({
+export const listMusicInferenceJobService = async ({
   apiKey,
-  modelId,
 }: {
   apiKey: string;
-  modelId: string;
 }) => {
-  const { listInferenceJobs } = LeapEndpoints;
+  const { getMusicInferenceJobs } = LeapEndpoints;
 
   try {
-    const response = await listInferenceJobs.fetch({
+    const response = await getMusicInferenceJobs.fetch({
       apiKey,
-      pathParams: {
-        modelId,
-      },
     });
 
     let responseJson = await response.json();
-    const data = responseJson as LeapInferenceSchema[];
+    const data = responseJson as LeapMusicSchema[];
 
     if (!response.ok) {
       const errorData = data as unknown as LeapAPIError;

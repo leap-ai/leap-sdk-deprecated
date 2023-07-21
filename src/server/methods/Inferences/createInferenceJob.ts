@@ -57,7 +57,9 @@ export const createInferenceJobService = async ({
       body: JSON.stringify(body),
     });
 
-    const data = (await response.json()) as Promise<LeapInferenceSchema>;
+    let responseJson = await response.json();
+    const data = responseJson as LeapInferenceSchema;
+
     if (!response.ok) {
       return { data: null, error: response.statusText };
     }

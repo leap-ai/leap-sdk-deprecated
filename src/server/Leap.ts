@@ -38,6 +38,15 @@ import {
 import { getModelService, IGetModelInput } from "./methods/Models/getModel";
 import { listModelService } from "./methods/Models/listModels";
 import {
+  createMusicInferenceJobService,
+  ICreateMusicInferenceJobInput,
+} from "./methods/Music/createMusicInferenceJob";
+import {
+  getMusicInferenceJobService,
+  IGetMusicInferenceJobInput,
+} from "./methods/Music/getMusicInferenceJob";
+import { listMusicInferenceJobService } from "./methods/Music/listMusicInferenceJobs";
+import {
   archiveImageSampleService,
   IArchiveImageSampleInput,
 } from "./methods/Samples/archiveImageSample";
@@ -249,6 +258,28 @@ export class Leap {
       return getEditJobService({
         apiKey: this.API_KEY,
         input,
+      });
+    },
+  };
+
+  public music = {
+    submitMusicGenerationJob: async (input: ICreateMusicInferenceJobInput) => {
+      return createMusicInferenceJobService({
+        apiKey: this.API_KEY,
+        input,
+      });
+    },
+
+    getMusicGenerationJob: async (input: IGetMusicInferenceJobInput) => {
+      return getMusicInferenceJobService({
+        apiKey: this.API_KEY,
+        input,
+      });
+    },
+
+    listMusicGenerationJobs: async () => {
+      return listMusicInferenceJobService({
+        apiKey: this.API_KEY,
       });
     },
   };

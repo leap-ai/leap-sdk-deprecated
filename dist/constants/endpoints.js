@@ -107,6 +107,18 @@ exports.LeapEndpoints = {
         urlTemplate: `/images/edit/{editId}`,
         method: `GET`,
     }),
+    createMusicInferenceJob: new Endpoint({
+        urlTemplate: `/music`,
+        method: `POST`,
+    }),
+    getMusicInferenceJobs: new Endpoint({
+        urlTemplate: `/music`,
+        method: `GET`,
+    }),
+    getSingleMusicInferenceJob: new Endpoint({
+        urlTemplate: `/music/{inferenceId}`,
+        method: `GET`,
+    }),
 };
 // LeapEndpoints.listModels.getUrl();
 // LeapEndpoints.archiveSample.getUrl({

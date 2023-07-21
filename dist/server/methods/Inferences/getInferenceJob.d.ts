@@ -8,7 +8,7 @@ export declare const getInferenceJobService: ({ apiKey, modelId, input, }: {
     modelId: string;
     input: IGetInferenceJobInput;
 }) => Promise<{
-    data: Promise<LeapInferenceSchema>;
+    data: LeapInferenceSchema;
     error: null;
 } | {
     data: null;

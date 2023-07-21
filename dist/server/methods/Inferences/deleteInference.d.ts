@@ -8,7 +8,7 @@ export declare const deleteInferenceService: ({ apiKey, modelId, input, }: {
     modelId: string;
     input: IDeleteInferenceInput;
 }) => Promise<{
-    data: Promise<LeapInferenceSchema>;
+    data: LeapInferenceSchema;
     error: null;
 } | {
     data: null;

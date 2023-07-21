@@ -9,6 +9,8 @@ import { IListInferenceJobsInput } from "./methods/Inferences/listInferenceJobs"
 import { ICreateModelInput } from "./methods/Models/createModel";
 import { IDeleteModelInput } from "./methods/Models/deleteModel";
 import { IGetModelInput } from "./methods/Models/getModel";
+import { ICreateMusicInferenceJobInput } from "./methods/Music/createMusicInferenceJob";
+import { IGetMusicInferenceJobInput } from "./methods/Music/getMusicInferenceJob";
 import { IArchiveImageSampleInput } from "./methods/Samples/archiveImageSample";
 import { IGetImageSampleInput } from "./methods/Samples/getImageSample";
 import { IListImageSamplesInput } from "./methods/Samples/listImageSamples";
@@ -37,28 +39,28 @@ export declare class Leap {
             error: any;
         }>;
         createInferenceJob: (input: ICreateInferenceJobInput) => Promise<{
-            data: Promise<import("../types/schemas/Inference").LeapInferenceSchema>;
+            data: import("../types/schemas/Inference").LeapInferenceSchema;
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         getInferenceJob: (input: IGetInferenceJobInput) => Promise<{
-            data: Promise<import("../types/schemas/Inference").LeapInferenceSchema>;
+            data: import("../types/schemas/Inference").LeapInferenceSchema;
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         listInferenceJobs: (input?: IListInferenceJobsInput) => Promise<{
-            data: Promise<import("../types/schemas/Inference").LeapInferenceSchema[]>;
+            data: import("../types/schemas/Inference").LeapInferenceSchema[];
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         deleteInference: (input: IDeleteInferenceInput) => Promise<{
-            data: Promise<import("../types/schemas/Inference").LeapInferenceSchema>;
+            data: import("../types/schemas/Inference").LeapInferenceSchema;
             error: null;
         } | {
             data: null;
@@ -69,6 +71,12 @@ export declare class Leap {
      * FINE-TUNE
      */
     fineTune: {
+        /**
+         * Creates a new model. This is the first step in the fine-tuning process.
+         *
+         * @param input - The input parameters used when creating the model.
+         * @returns - The newly created model.
+         */
         createModel: (input: ICreateModelInput) => Promise<{
             data: Promise<import("../types/schemas/Model").LeapModelSchema>;
             error: null;
@@ -155,6 +163,29 @@ export declare class Leap {
         createEditJob: (input: ICreateEditJobInput) => Promise<import("./methods/Edits/createEditJob").ICreateEditJobServiceResponse>;
         getEditJob: (input: IGetEditJobInput) => Promise<{
             data: Promise<import("../types/schemas/Version").LeapVersionSchema>;
+            error: null;
+        } | {
+            data: null;
+            error: any;
+        }>;
+    };
+    music: {
+        submitMusicGenerationJob: (input: ICreateMusicInferenceJobInput) => Promise<{
+            data: import("../types/schemas/Music").LeapMusicSchema;
+            error: null;
+        } | {
+            data: null;
+            error: any;
+        }>;
+        getMusicGenerationJob: (input: IGetMusicInferenceJobInput) => Promise<{
+            data: import("../types/schemas/Music").LeapMusicSchema;
+            error: null;
+        } | {
+            data: null;
+            error: any;
+        }>;
+        listMusicGenerationJobs: () => Promise<{
+            data: import("../types/schemas/Music").LeapMusicSchema[];
             error: null;
         } | {
             data: null;

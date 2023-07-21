@@ -12,7 +12,8 @@ const getInferenceJobService = async ({ apiKey, modelId, input, }) => {
                 inferenceId: input.inferenceId,
             },
         });
-        const data = (await response.json());
+        let responseJson = await response.json();
+        const data = responseJson;
         if (!response.ok) {
             const errorData = data;
             return { data: null, error: errorData };

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createModelService = void 0;
+const ModelSubjectType_1 = require("../../../enums/ModelSubjectType");
 const endpoints_1 = require("../../../constants/endpoints");
 const createModelService = async ({ apiKey, input, }) => {
     const { createModel } = endpoints_1.LeapEndpoints;
@@ -8,6 +9,7 @@ const createModelService = async ({ apiKey, input, }) => {
         title: input.title,
         subjectKeyword: input.subjectKeyword,
         subjectIdentifier: input.subjectIdentifier,
+        subjectType: input.subjectType || ModelSubjectType_1.ModelSubjectTypesEnum.PERSON,
     };
     try {
         const response = await createModel.fetch({

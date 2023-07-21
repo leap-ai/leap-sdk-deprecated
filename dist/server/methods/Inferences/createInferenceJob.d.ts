@@ -22,7 +22,7 @@ export declare const createInferenceJobService: ({ apiKey, modelId, input, }: {
     modelId: string;
     input: ICreateInferenceJobInput;
 }) => Promise<{
-    data: Promise<LeapInferenceSchema>;
+    data: LeapInferenceSchema;
     error: null;
 } | {
     data: null;

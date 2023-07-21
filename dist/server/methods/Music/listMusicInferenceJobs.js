@@ -1,16 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteInferenceService = void 0;
+exports.listMusicInferenceJobService = void 0;
 const endpoints_1 = require("../../../constants/endpoints");
-const deleteInferenceService = async ({ apiKey, modelId, input, }) => {
-    const { deleteInference } = endpoints_1.LeapEndpoints;
+const listMusicInferenceJobService = async ({ apiKey, }) => {
+    const { getMusicInferenceJobs } = endpoints_1.LeapEndpoints;
     try {
-        const response = await deleteInference.fetch({
+        const response = await getMusicInferenceJobs.fetch({
             apiKey,
-            pathParams: {
-                modelId,
-                inferenceId: input.inferenceId,
-            },
         });
         let responseJson = await response.json();
         const data = responseJson;
@@ -24,4 +20,4 @@ const deleteInferenceService = async ({ apiKey, modelId, input, }) => {
         return { data: null, error: error.message };
     }
 };
-exports.deleteInferenceService = deleteInferenceService;
+exports.listMusicInferenceJobService = listMusicInferenceJobService;

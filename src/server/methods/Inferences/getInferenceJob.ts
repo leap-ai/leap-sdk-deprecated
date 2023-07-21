@@ -28,7 +28,9 @@ export const getInferenceJobService = async ({
       },
     });
 
-    const data = (await response.json()) as Promise<LeapInferenceSchema>;
+    let responseJson = await response.json();
+    const data = responseJson as LeapInferenceSchema;
+
     if (!response.ok) {
       const errorData = data as unknown as LeapAPIError;
       return { data: null, error: errorData };

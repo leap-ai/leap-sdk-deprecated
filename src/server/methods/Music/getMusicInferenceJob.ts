@@ -1,34 +1,30 @@
 import { LeapEndpoints } from "../../../constants/endpoints";
 import { LeapAPIError } from "../../../types/Error";
-import { LeapInferenceSchema } from "../../../types/schemas/Inference";
+import { LeapMusicSchema } from "../../../types/schemas/Music";
 
-export interface IDeleteInferenceInput {
-  modelId?: string;
+export interface IGetMusicInferenceJobInput {
   inferenceId: string;
 }
 
-export const deleteInferenceService = async ({
+export const getMusicInferenceJobService = async ({
   apiKey,
-  modelId,
   input,
 }: {
   apiKey: string;
-  modelId: string;
-  input: IDeleteInferenceInput;
+  input: IGetMusicInferenceJobInput;
 }) => {
-  const { deleteInference } = LeapEndpoints;
+  const { getSingleMusicInferenceJob } = LeapEndpoints;
 
   try {
-    const response = await deleteInference.fetch({
+    const response = await getSingleMusicInferenceJob.fetch({
       apiKey,
       pathParams: {
-        modelId,
         inferenceId: input.inferenceId,
       },
     });
 
     let responseJson = await response.json();
-    const data = responseJson as LeapInferenceSchema;
+    const data = responseJson as LeapMusicSchema;
 
     if (!response.ok) {
       const errorData = data as unknown as LeapAPIError;
