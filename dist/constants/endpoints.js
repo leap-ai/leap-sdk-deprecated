@@ -2,8 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LeapEndpoints = void 0;
 const cross_fetch_1 = require("cross-fetch");
-const API_HOST = "https://api.tryleap.ai";
+let API_HOST = "https://api.tryleap.ai";
 const API_BASE_PATH = "/api/v1";
+if (process.env.LEAP_SDK_DEV_HOST) {
+    API_HOST = process.env.LEAP_SDK_DEV_HOST;
+}
+console.log({ API_HOST });
 class Endpoint {
     constructor({ urlTemplate, method, }) {
         this.urlTemplate = urlTemplate;
@@ -20,13 +24,15 @@ class Endpoint {
         return `${API_HOST}${API_BASE_PATH}${url}`;
     }
     fetch({ apiKey, pathParams, body, isMultiPart, }) {
+        console.log();
         const headers = {
-            Authorization: `Bearer ${apiKey}`,
+            Authorization: `Bearer ${apiKey.trim()}`,
         };
         // Set headers unless multipart
         if (!isMultiPart) {
             headers["Content-Type"] = "application/json";
         }
+        console.log(this.getUrl(pathParams));
         return (0, cross_fetch_1.fetch)(this.getUrl(pathParams), {
             method: this.method,
             body,

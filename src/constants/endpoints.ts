@@ -1,7 +1,11 @@
 import { fetch } from "cross-fetch";
 
-const API_HOST = "https://api.tryleap.ai";
+let API_HOST = "https://api.tryleap.ai";
 const API_BASE_PATH = "/api/v1";
+
+if (process.env.LEAP_SDK_DEV_HOST) {
+  API_HOST = process.env.LEAP_SDK_DEV_HOST;
+}
 
 class Endpoint<T = undefined> {
   private urlTemplate: string;
@@ -43,7 +47,7 @@ class Endpoint<T = undefined> {
     const headers: {
       [key: string]: string;
     } = {
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${apiKey.trim()}`,
     };
 
     // Set headers unless multipart
