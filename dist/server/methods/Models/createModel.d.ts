@@ -1,4 +1,3 @@
-import { ModelSubjectTypesEnum } from "../../../enums/ModelSubjectType";
 import { LeapModelSchema } from "../../../types/schemas/Model";
 interface IBody {
     /**
@@ -24,13 +23,11 @@ interface IBody {
      * The type of subject that the model will generate.
      *
      * Some options include:
-     * - ModelSubjectTypesEnum.PERSON
-     * - ModelSubjectTypesEnum.CAT
-     * - ModelSubjectTypesEnum.DOG
-     *
-     * @default ModelSubjectTypesEnum.PERSON
+     * - "person"
+     * - "animal"
+     * - "object"
      */
-    subjectType?: ModelSubjectTypesEnum;
+    subjectType: string;
 }
 export interface ICreateModelInput extends IBody {
 }

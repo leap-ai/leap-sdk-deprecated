@@ -1,6 +1,6 @@
 {
   "name": "@leap-ai/sdk",
-  "version": "0.0.127",
+  "version": "0.0.128",
   "description": "Node and React SDK for Leap",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
