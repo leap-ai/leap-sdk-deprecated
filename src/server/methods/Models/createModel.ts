@@ -1,5 +1,3 @@
-import { ModelSubjectTypesEnum } from "../../../enums/ModelSubjectType";
-
 import { LeapEndpoints } from "../../../constants/endpoints";
 
 import { LeapAPIError } from "../../../types/Error";
@@ -32,13 +30,11 @@ interface IBody {
    * The type of subject that the model will generate.
    *
    * Some options include:
-   * - ModelSubjectTypesEnum.PERSON
-   * - ModelSubjectTypesEnum.CAT
-   * - ModelSubjectTypesEnum.DOG
-   *
-   * @default ModelSubjectTypesEnum.PERSON
+   * - "person"
+   * - "animal"
+   * - "object"
    */
-  subjectType?: ModelSubjectTypesEnum;
+  subjectType: string;
 }
 
 export interface ICreateModelInput extends IBody {}
@@ -56,7 +52,7 @@ export const createModelService = async ({
     title: input.title,
     subjectKeyword: input.subjectKeyword,
     subjectIdentifier: input.subjectIdentifier,
-    subjectType: input.subjectType || ModelSubjectTypesEnum.PERSON,
+    subjectType: input.subjectType,
   };
 
   try {
