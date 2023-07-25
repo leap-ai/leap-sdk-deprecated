@@ -7,6 +7,7 @@ const createMusicInferenceJobService = async ({ apiKey, input, }) => {
     const body = {
         prompt: input.prompt,
         duration: input.duration,
+        mode: input.mode,
     };
     try {
         const response = await createMusicInferenceJob.fetch({
