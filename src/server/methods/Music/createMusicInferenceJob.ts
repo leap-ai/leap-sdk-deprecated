@@ -22,6 +22,7 @@ export const createMusicInferenceJobService = async ({
   const body: ICreateMusicInferenceJobBody = {
     prompt: input.prompt,
     duration: input.duration,
+    mode: input.mode,
   };
 
   try {
