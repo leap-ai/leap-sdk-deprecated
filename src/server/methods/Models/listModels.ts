@@ -14,7 +14,8 @@ export const listModelService = async ({ apiKey }: { apiKey: string }) => {
       apiKey,
     });
 
-    const data = (await response.json()) as Promise<LeapModelSchema[]>;
+    let responseJson = await response.json();
+    const data = responseJson as LeapModelSchema[];
 
     if (!response.ok) {
       const errorData = data as unknown as LeapAPIError;

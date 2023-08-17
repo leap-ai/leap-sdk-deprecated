@@ -1,46 +1,41 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Leap = void 0;
-const createEditJob_1 = require("./methods/Edits/createEditJob");
-const editImage_1 = require("./methods/Edits/editImage");
-const getEditJob_1 = require("./methods/Edits/getEditJob");
 const createInferenceJob_1 = require("./methods/Inferences/createInferenceJob");
 const deleteInference_1 = require("./methods/Inferences/deleteInference");
 const generateImage_1 = require("./methods/Inferences/generateImage");
 const getInferenceJob_1 = require("./methods/Inferences/getInferenceJob");
 const listInferenceJobs_1 = require("./methods/Inferences/listInferenceJobs");
-const createModel_1 = require("./methods/Models/createModel");
 const deleteModel_1 = require("./methods/Models/deleteModel");
 const getModel_1 = require("./methods/Models/getModel");
 const listModels_1 = require("./methods/Models/listModels");
+const trainModel_1 = require("./methods/Models/trainModel");
 const createMusicInferenceJob_1 = require("./methods/Music/createMusicInferenceJob");
 const getMusicInferenceJob_1 = require("./methods/Music/getMusicInferenceJob");
 const listMusicInferenceJobs_1 = require("./methods/Music/listMusicInferenceJobs");
-const archiveImageSample_1 = require("./methods/Samples/archiveImageSample");
-const getImageSample_1 = require("./methods/Samples/getImageSample");
-const listImageSamples_1 = require("./methods/Samples/listImageSamples");
-const uploadImageSamples_1 = require("./methods/Samples/uploadImageSamples");
-const getModelVersion_1 = require("./methods/Versions/getModelVersion");
-const listModelVersions_1 = require("./methods/Versions/listModelVersions");
-const queueTrainingJob_1 = require("./methods/Versions/queueTrainingJob");
 // // Throw an error if this is implemented client-side
 if (typeof window !== "undefined") {
     throw new Error("Leap SDK is not intended to be used client-side. Please use the Leap SDK in a Node.js environment.");
 }
+const publicModels = {
+    sdxl: "26a1a203-3a46-42cb-8cfa-f4de075907d8",
+    "sd-1.5": "8b1b897c-d66d-45a6-b8d7-8e32421d02cf",
+    "sd-2.1": "ee88d150-4259-4b77-9d0f-090abe29f650",
+    "realistic-vision-v4.0": "37d42ae9-5f5f-4399-b60b-014d35e762a5",
+    "realistic-vision-v2.0": "eab32df0-de26-4b83-a908-a83f3015e971",
+    "openjourney-v4": "1e7737d7-545e-469f-857f-e4b46eaa151d",
+    "openjourney-v2": "d66b1686-5e5d-43b2-a2e7-d295d679917c",
+    "openjourney-v1": "7575ea52-3d4f-400f-9ded-09f7b1b1a5b8",
+    "future-diffusion": "1285ded4-b11b-4993-a491-d87cdfe6310c",
+    "modern-disney": "8ead1e66-5722-4ff6-a13f-b5212f575321",
+};
 class Leap {
     constructor(apiKey, modelId) {
         /**
          * INTERNAL STATE UTILS
          */
         this.useModel = (modelId) => {
-            this.CURRENT_MODEL_ID = modelId;
-        };
-        this.usePublicModel = (modelKey) => {
-            const publicModels = {
-                "sd-1.5": "8b1b897c-d66d-45a6-b8d7-8e32421d02cf",
-                "future-diffusion": "1285ded4-b11b-4993-a491-d87cdfe6310c",
-            };
-            this.CURRENT_MODEL_ID = publicModels[modelKey];
+            this.CURRENT_MODEL_ID = publicModels[modelId];
         };
         /**
          * GENERATE
@@ -93,8 +88,8 @@ class Leap {
              * @param input - The input parameters used when creating the model.
              * @returns - The newly created model.
              */
-            createModel: async (input) => {
-                return (0, createModel_1.createModelService)({
+            trainModel: async (input) => {
+                return (0, trainModel_1.trainModelService)({
                     apiKey: this.API_KEY,
                     input,
                 });
@@ -114,79 +109,6 @@ class Leap {
                 return (0, deleteModel_1.deleteModelService)({
                     apiKey: this.API_KEY,
                     modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                });
-            },
-            // Samples
-            uploadImageSamples: async (input) => {
-                return (0, uploadImageSamples_1.uploadImageSamplesService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            listImageSamples: async (input) => {
-                return (0, listImageSamples_1.listImageSamplesService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            getImageSample: async (input) => {
-                return (0, getImageSample_1.getImageSampleService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            archiveImageSample: async (input) => {
-                return (0, archiveImageSample_1.archiveImageSampleService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            // Versions
-            queueTrainingJob: async (input) => {
-                return (0, queueTrainingJob_1.queueModelVersionTrainingService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            getModelVersion: async (input) => {
-                return (0, getModelVersion_1.getModelVersionService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                    input,
-                });
-            },
-            listModelVersions: async (input) => {
-                return (0, listModelVersions_1.listModelVersionsService)({
-                    apiKey: this.API_KEY,
-                    modelId: (input === null || input === void 0 ? void 0 : input.modelId) || this.CURRENT_MODEL_ID,
-                });
-            },
-        };
-        /**
-         * EDIT
-         */
-        this.edit = {
-            editImage: async (input) => {
-                return (0, editImage_1.editImageService)({
-                    apiKey: this.API_KEY,
-                    input,
-                });
-            },
-            createEditJob: async (input) => {
-                return (0, createEditJob_1.createEditJobService)({
-                    apiKey: this.API_KEY,
-                    input,
-                });
-            },
-            getEditJob: async (input) => {
-                return (0, getEditJob_1.getEditJobService)({
-                    apiKey: this.API_KEY,
-                    input,
                 });
             },
         };
@@ -210,7 +132,9 @@ class Leap {
             },
         };
         this.API_KEY = apiKey;
-        this.CURRENT_MODEL_ID = modelId || "8b1b897c-d66d-45a6-b8d7-8e32421d02cf";
+        this.CURRENT_MODEL_ID = modelId
+            ? publicModels[modelId]
+            : publicModels["sdxl"];
     }
 }
 exports.Leap = Leap;

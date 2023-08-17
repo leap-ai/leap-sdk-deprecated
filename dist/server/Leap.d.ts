@@ -1,32 +1,33 @@
-import { ICreateEditJobInput } from "./methods/Edits/createEditJob";
-import { IEditImageInput } from "./methods/Edits/editImage";
-import { IGetEditJobInput } from "./methods/Edits/getEditJob";
 import { ICreateInferenceJobInput } from "./methods/Inferences/createInferenceJob";
 import { IDeleteInferenceInput } from "./methods/Inferences/deleteInference";
 import { IGenerateImageInput } from "./methods/Inferences/generateImage";
 import { IGetInferenceJobInput } from "./methods/Inferences/getInferenceJob";
 import { IListInferenceJobsInput } from "./methods/Inferences/listInferenceJobs";
-import { ICreateModelInput } from "./methods/Models/createModel";
 import { IDeleteModelInput } from "./methods/Models/deleteModel";
 import { IGetModelInput } from "./methods/Models/getModel";
+import { ITrainModelInput } from "./methods/Models/trainModel";
 import { ICreateMusicInferenceJobInput } from "./methods/Music/createMusicInferenceJob";
 import { IGetMusicInferenceJobInput } from "./methods/Music/getMusicInferenceJob";
-import { IArchiveImageSampleInput } from "./methods/Samples/archiveImageSample";
-import { IGetImageSampleInput } from "./methods/Samples/getImageSample";
-import { IListImageSamplesInput } from "./methods/Samples/listImageSamples";
-import { IUploadImageSamplesInput } from "./methods/Samples/uploadImageSamples";
-import { IGetModelVersionInput } from "./methods/Versions/getModelVersion";
-import { IListModelVersionsInput } from "./methods/Versions/listModelVersions";
-import { IQueueModelVersionTrainingInput } from "./methods/Versions/queueTrainingJob";
+declare const publicModels: {
+    sdxl: string;
+    "sd-1.5": string;
+    "sd-2.1": string;
+    "realistic-vision-v4.0": string;
+    "realistic-vision-v2.0": string;
+    "openjourney-v4": string;
+    "openjourney-v2": string;
+    "openjourney-v1": string;
+    "future-diffusion": string;
+    "modern-disney": string;
+};
 export declare class Leap {
-    private CURRENT_MODEL_ID;
     private API_KEY;
-    constructor(apiKey: string, modelId?: string);
+    private CURRENT_MODEL_ID;
+    constructor(apiKey: string, modelId?: keyof typeof publicModels);
     /**
      * INTERNAL STATE UTILS
      */
-    useModel: (modelId: string) => void;
-    usePublicModel: (modelKey: "sd-1.5" | "future-diffusion") => void;
+    useModel: (modelId: keyof typeof publicModels) => void;
     /**
      * GENERATE
      */
@@ -77,92 +78,29 @@ export declare class Leap {
          * @param input - The input parameters used when creating the model.
          * @returns - The newly created model.
          */
-        createModel: (input: ICreateModelInput) => Promise<{
-            data: Promise<import("../types/schemas/Model").LeapModelSchema>;
+        trainModel: (input: ITrainModelInput) => Promise<{
+            data: import("../types/schemas/Model").LeapModelSchema;
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         listModels: () => Promise<{
-            data: Promise<import("../types/schemas/Model").LeapModelSchema[]>;
+            data: import("../types/schemas/Model").LeapModelSchema[];
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         getModel: (input: IGetModelInput) => Promise<{
-            data: Promise<import("../types/schemas/Model").LeapModelSchema>;
+            data: import("../types/schemas/Model").LeapModelSchema;
             error: null;
         } | {
             data: null;
             error: any;
         }>;
         deleteModel: (input: IDeleteModelInput) => Promise<{
-            data: Promise<import("../types/schemas/Model").LeapModelSchema>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        uploadImageSamples: (input: IUploadImageSamplesInput) => Promise<{
-            data: Promise<import("../types/schemas/Sample").LeapSampleSchema[]>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        listImageSamples: (input: IListImageSamplesInput) => Promise<{
-            data: Promise<import("../types/schemas/Sample").LeapSampleSchema[]>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        getImageSample: (input: IGetImageSampleInput) => Promise<{
-            data: Promise<import("../types/schemas/Sample").LeapSampleSchema>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        archiveImageSample: (input: IArchiveImageSampleInput) => Promise<{
-            data: Promise<import("../types/schemas/Sample").LeapSampleSchema>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        queueTrainingJob: (input: IQueueModelVersionTrainingInput) => Promise<{
-            data: Promise<import("../types/schemas/Version").LeapVersionSchema>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        getModelVersion: (input: IGetModelVersionInput) => Promise<{
-            data: Promise<import("../types/schemas/Version").LeapVersionSchema>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-        listModelVersions: (input: IListModelVersionsInput) => Promise<{
-            data: Promise<import("../types/schemas/Version").LeapVersionSchema[]>;
-            error: null;
-        } | {
-            data: null;
-            error: any;
-        }>;
-    };
-    /**
-     * EDIT
-     */
-    edit: {
-        editImage: (input: IEditImageInput) => Promise<import("./methods/Edits/editImage").IEditImageServiceResponse>;
-        createEditJob: (input: ICreateEditJobInput) => Promise<import("./methods/Edits/createEditJob").ICreateEditJobServiceResponse>;
-        getEditJob: (input: IGetEditJobInput) => Promise<{
-            data: Promise<import("../types/schemas/Version").LeapVersionSchema>;
+            data: import("../types/schemas/Model").LeapModelSchema;
             error: null;
         } | {
             data: null;
@@ -193,3 +131,4 @@ export declare class Leap {
         }>;
     };
 }
+export {};

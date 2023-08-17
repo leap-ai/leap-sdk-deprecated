@@ -6,7 +6,7 @@ export interface IListModelsInput extends IBody {
 export declare const listModelService: ({ apiKey }: {
     apiKey: string;
 }) => Promise<{
-    data: Promise<LeapModelSchema[]>;
+    data: LeapModelSchema[];
     error: null;
 } | {
     data: null;

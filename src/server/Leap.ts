@@ -1,13 +1,4 @@
 import {
-  createEditJobService,
-  ICreateEditJobInput,
-} from "./methods/Edits/createEditJob";
-import { editImageService, IEditImageInput } from "./methods/Edits/editImage";
-import {
-  getEditJobService,
-  IGetEditJobInput,
-} from "./methods/Edits/getEditJob";
-import {
   createInferenceJobService,
   ICreateInferenceJobInput,
 } from "./methods/Inferences/createInferenceJob";
@@ -28,15 +19,15 @@ import {
   listInferenceJobService,
 } from "./methods/Inferences/listInferenceJobs";
 import {
-  createModelService,
-  ICreateModelInput,
-} from "./methods/Models/createModel";
-import {
   deleteModelService,
   IDeleteModelInput,
 } from "./methods/Models/deleteModel";
 import { getModelService, IGetModelInput } from "./methods/Models/getModel";
 import { listModelService } from "./methods/Models/listModels";
+import {
+  ITrainModelInput,
+  trainModelService,
+} from "./methods/Models/trainModel";
 import {
   createMusicInferenceJobService,
   ICreateMusicInferenceJobInput,
@@ -46,34 +37,6 @@ import {
   IGetMusicInferenceJobInput,
 } from "./methods/Music/getMusicInferenceJob";
 import { listMusicInferenceJobService } from "./methods/Music/listMusicInferenceJobs";
-import {
-  archiveImageSampleService,
-  IArchiveImageSampleInput,
-} from "./methods/Samples/archiveImageSample";
-import {
-  getImageSampleService,
-  IGetImageSampleInput,
-} from "./methods/Samples/getImageSample";
-import {
-  IListImageSamplesInput,
-  listImageSamplesService,
-} from "./methods/Samples/listImageSamples";
-import {
-  IUploadImageSamplesInput,
-  uploadImageSamplesService,
-} from "./methods/Samples/uploadImageSamples";
-import {
-  getModelVersionService,
-  IGetModelVersionInput,
-} from "./methods/Versions/getModelVersion";
-import {
-  IListModelVersionsInput,
-  listModelVersionsService,
-} from "./methods/Versions/listModelVersions";
-import {
-  IQueueModelVersionTrainingInput,
-  queueModelVersionTrainingService,
-} from "./methods/Versions/queueTrainingJob";
 
 // // Throw an error if this is implemented client-side
 if (typeof window !== "undefined") {
@@ -82,30 +45,36 @@ if (typeof window !== "undefined") {
   );
 }
 
-export class Leap {
-  private CURRENT_MODEL_ID: string;
-  private API_KEY: string;
+const publicModels = {
+  sdxl: "26a1a203-3a46-42cb-8cfa-f4de075907d8",
+  "sd-1.5": "8b1b897c-d66d-45a6-b8d7-8e32421d02cf",
+  "sd-2.1": "ee88d150-4259-4b77-9d0f-090abe29f650",
+  "realistic-vision-v4.0": "37d42ae9-5f5f-4399-b60b-014d35e762a5",
+  "realistic-vision-v2.0": "eab32df0-de26-4b83-a908-a83f3015e971",
+  "openjourney-v4": "1e7737d7-545e-469f-857f-e4b46eaa151d",
+  "openjourney-v2": "d66b1686-5e5d-43b2-a2e7-d295d679917c",
+  "openjourney-v1": "7575ea52-3d4f-400f-9ded-09f7b1b1a5b8",
+  "future-diffusion": "1285ded4-b11b-4993-a491-d87cdfe6310c",
+  "modern-disney": "8ead1e66-5722-4ff6-a13f-b5212f575321",
+};
 
-  constructor(apiKey: string, modelId?: string) {
+export class Leap {
+  private API_KEY: string;
+  private CURRENT_MODEL_ID: string;
+
+  constructor(apiKey: string, modelId?: keyof typeof publicModels) {
     this.API_KEY = apiKey;
-    this.CURRENT_MODEL_ID = modelId || "8b1b897c-d66d-45a6-b8d7-8e32421d02cf";
+    this.CURRENT_MODEL_ID = modelId
+      ? publicModels[modelId]
+      : publicModels["sdxl"];
   }
 
   /**
    * INTERNAL STATE UTILS
    */
 
-  public useModel = (modelId: string) => {
-    this.CURRENT_MODEL_ID = modelId;
-  };
-
-  public usePublicModel = (modelKey: "sd-1.5" | "future-diffusion") => {
-    const publicModels = {
-      "sd-1.5": "8b1b897c-d66d-45a6-b8d7-8e32421d02cf",
-      "future-diffusion": "1285ded4-b11b-4993-a491-d87cdfe6310c",
-    };
-
-    this.CURRENT_MODEL_ID = publicModels[modelKey];
+  public useModel = (modelId: keyof typeof publicModels) => {
+    this.CURRENT_MODEL_ID = publicModels[modelId];
   };
 
   /**
@@ -161,8 +130,8 @@ export class Leap {
      * @param input - The input parameters used when creating the model.
      * @returns - The newly created model.
      */
-    createModel: async (input: ICreateModelInput) => {
-      return createModelService({
+    trainModel: async (input: ITrainModelInput) => {
+      return trainModelService({
         apiKey: this.API_KEY,
         input,
       });
@@ -182,82 +151,6 @@ export class Leap {
       return deleteModelService({
         apiKey: this.API_KEY,
         modelId: input?.modelId || this.CURRENT_MODEL_ID,
-      });
-    },
-
-    // Samples
-    uploadImageSamples: async (input: IUploadImageSamplesInput) => {
-      return uploadImageSamplesService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-    listImageSamples: async (input: IListImageSamplesInput) => {
-      return listImageSamplesService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-    getImageSample: async (input: IGetImageSampleInput) => {
-      return getImageSampleService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-    archiveImageSample: async (input: IArchiveImageSampleInput) => {
-      return archiveImageSampleService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-
-    // Versions
-    queueTrainingJob: async (input: IQueueModelVersionTrainingInput) => {
-      return queueModelVersionTrainingService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-    getModelVersion: async (input: IGetModelVersionInput) => {
-      return getModelVersionService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-        input,
-      });
-    },
-    listModelVersions: async (input: IListModelVersionsInput) => {
-      return listModelVersionsService({
-        apiKey: this.API_KEY,
-        modelId: input?.modelId || this.CURRENT_MODEL_ID,
-      });
-    },
-  };
-
-  /**
-   * EDIT
-   */
-  public edit = {
-    editImage: async (input: IEditImageInput) => {
-      return editImageService({
-        apiKey: this.API_KEY,
-        input,
-      });
-    },
-    createEditJob: async (input: ICreateEditJobInput) => {
-      return createEditJobService({
-        apiKey: this.API_KEY,
-        input,
-      });
-    },
-    getEditJob: async (input: IGetEditJobInput) => {
-      return getEditJobService({
-        apiKey: this.API_KEY,
-        input,
       });
     },
   };

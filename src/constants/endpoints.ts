@@ -1,7 +1,7 @@
 import { fetch } from "cross-fetch";
 
 let API_HOST = "https://api.tryleap.ai";
-const API_BASE_PATH = "/api/v1";
+const API_BASE_PATH = "/api";
 
 if (process.env.LEAP_SDK_DEV_HOST) {
   API_HOST = process.env.LEAP_SDK_DEV_HOST;
@@ -10,27 +10,33 @@ if (process.env.LEAP_SDK_DEV_HOST) {
 class Endpoint<T = undefined> {
   private urlTemplate: string;
   public method: "POST" | "GET" | "PUT" | "DELETE";
+  public version: string;
 
   constructor({
     urlTemplate,
     method,
+    version = 1,
   }: {
     urlTemplate: string;
     method: "POST" | "GET" | "PUT" | "DELETE";
+    version?: number | string;
   }) {
     this.urlTemplate = urlTemplate;
     this.method = method;
+    this.version = new Number(version).toString();
   }
 
   getUrl(params?: T) {
+    const urlBase = `${API_HOST}${API_BASE_PATH}${"/v" + this.version}`;
+
     if (!params) {
-      return `${API_HOST}${API_BASE_PATH}${this.urlTemplate}`;
+      return `${urlBase}${this.urlTemplate}`;
     }
     let url = this.urlTemplate;
     for (const [key, value] of Object.entries(params)) {
       url = url.replace(`{${key}}`, value as string);
     }
-    return `${API_HOST}${API_BASE_PATH}${url}`;
+    return `${urlBase}${url}`;
   }
 
   fetch({
@@ -69,8 +75,9 @@ export const LeapEndpoints = {
     method: `GET`,
   }),
 
-  createModel: new Endpoint({
+  trainModel: new Endpoint({
     urlTemplate: `/images/models`,
+    version: 2,
     method: `POST`,
   }),
 
@@ -86,20 +93,10 @@ export const LeapEndpoints = {
     urlTemplate: `/images/models/{modelId}`,
     method: `DELETE`,
   }),
-  getModelVersion: new Endpoint<{
-    modelId: string;
-    versionId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/versions/{versionId}`,
-    method: `GET`,
-  }),
 
-  listModelVersions: new Endpoint<{
-    modelId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/versions`,
-    method: `GET`,
-  }),
+  /**
+   * INFERENCES
+   */
 
   listInferenceJobs: new Endpoint<{
     modelId: string;
@@ -130,62 +127,10 @@ export const LeapEndpoints = {
     urlTemplate: `/images/models/{modelId}/inferences/{inferenceId}`,
     method: `GET`,
   }),
-  queueModelVersionTraining: new Endpoint<{
-    modelId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/queue`,
-    method: `POST`,
-  }),
 
-  listModelSamples: new Endpoint<{
-    modelId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/samples`,
-    method: `GET`,
-  }),
-
-  getSingleSample: new Endpoint<{
-    modelId: string;
-    sampleId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/samples/{sampleId}`,
-    method: `GET`,
-  }),
-
-  uploadSamples: new Endpoint<{
-    modelId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/samples/`,
-    method: `POST`,
-  }),
-
-  uploadSamplesViaUrl: new Endpoint<{
-    modelId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/samples/url`,
-    method: `POST`,
-  }),
-
-  archiveSample: new Endpoint<{
-    modelId: string;
-    sampleId: string;
-  }>({
-    urlTemplate: `/images/models/{modelId}/samples/{sampleId}/archive`,
-    method: `POST`,
-  }),
-
-  createEditJob: new Endpoint({
-    urlTemplate: `/images/edit`,
-    method: `POST`,
-  }),
-
-  getEditJob: new Endpoint<{
-    editId: string;
-  }>({
-    urlTemplate: `/images/edit/{editId}`,
-    method: `GET`,
-  }),
-
+  /**
+   * MUSIC
+   */
   createMusicInferenceJob: new Endpoint({
     urlTemplate: `/music`,
     method: `POST`,
@@ -203,19 +148,3 @@ export const LeapEndpoints = {
     method: `GET`,
   }),
 };
-
-// LeapEndpoints.listModels.getUrl();
-// LeapEndpoints.archiveSample.getUrl({
-//   modelId: "123",
-//   sampleId: "456",
-// });
-// LeapEndpoints.getEditImage.getUrl({
-//   editId: "123",
-// });
-// LeapEndpoints.getEditImage.fetch({
-//   apiKey: "123",
-//   pathParams: {
-//     editId: "123",
-//   },
-//   body: {},
-// });

@@ -8,7 +8,7 @@ export declare const getModelService: ({ apiKey, modelId, }: {
     apiKey: string;
     modelId: string;
 }) => Promise<{
-    data: Promise<LeapModelSchema>;
+    data: LeapModelSchema;
     error: null;
 } | {
     data: null;

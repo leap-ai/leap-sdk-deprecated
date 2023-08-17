@@ -11,7 +11,8 @@ const deleteModelService = async ({ apiKey, modelId, }) => {
                 modelId,
             },
         });
-        const data = (await response.json());
+        let responseJson = await response.json();
+        const data = responseJson;
         if (!response.ok) {
             const errorData = data;
             return { data: null, error: errorData };

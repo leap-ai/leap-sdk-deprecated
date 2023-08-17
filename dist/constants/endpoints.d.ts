@@ -1,9 +1,11 @@
 declare class Endpoint<T = undefined> {
     private urlTemplate;
     method: "POST" | "GET" | "PUT" | "DELETE";
-    constructor({ urlTemplate, method, }: {
+    version: string;
+    constructor({ urlTemplate, method, version, }: {
         urlTemplate: string;
         method: "POST" | "GET" | "PUT" | "DELETE";
+        version?: number | string;
     });
     getUrl(params?: T): string;
     fetch({ apiKey, pathParams, body, isMultiPart, }: {
@@ -15,20 +17,16 @@ declare class Endpoint<T = undefined> {
 }
 export declare const LeapEndpoints: {
     listModels: Endpoint<undefined>;
-    createModel: Endpoint<undefined>;
+    trainModel: Endpoint<undefined>;
     getModel: Endpoint<{
         modelId: string;
     }>;
     deleteModel: Endpoint<{
         modelId: string;
     }>;
-    getModelVersion: Endpoint<{
-        modelId: string;
-        versionId: string;
-    }>;
-    listModelVersions: Endpoint<{
-        modelId: string;
-    }>;
+    /**
+     * INFERENCES
+     */
     listInferenceJobs: Endpoint<{
         modelId: string;
     }>;
@@ -43,30 +41,9 @@ export declare const LeapEndpoints: {
         modelId: string;
         inferenceId: string;
     }>;
-    queueModelVersionTraining: Endpoint<{
-        modelId: string;
-    }>;
-    listModelSamples: Endpoint<{
-        modelId: string;
-    }>;
-    getSingleSample: Endpoint<{
-        modelId: string;
-        sampleId: string;
-    }>;
-    uploadSamples: Endpoint<{
-        modelId: string;
-    }>;
-    uploadSamplesViaUrl: Endpoint<{
-        modelId: string;
-    }>;
-    archiveSample: Endpoint<{
-        modelId: string;
-        sampleId: string;
-    }>;
-    createEditJob: Endpoint<undefined>;
-    getEditJob: Endpoint<{
-        editId: string;
-    }>;
+    /**
+     * MUSIC
+     */
     createMusicInferenceJob: Endpoint<undefined>;
     getMusicInferenceJobs: Endpoint<undefined>;
     getSingleMusicInferenceJob: Endpoint<{
