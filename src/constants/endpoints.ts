@@ -76,7 +76,7 @@ export const LeapEndpoints = {
   }),
 
   trainModel: new Endpoint({
-    urlTemplate: `/images/models`,
+    urlTemplate: `/images/models/new`,
     version: 2,
     method: `POST`,
   }),
