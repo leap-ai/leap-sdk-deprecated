@@ -4,7 +4,7 @@ import { LeapMusicSchema } from "../../../types/schemas/Music";
 export interface ICreateMusicInferenceJobBody {
   prompt: string;
   duration?: number;
-  mode?: "music" | "melody";
+  mode: "music" | "melody";
 }
 
 export interface ICreateMusicInferenceJobInput
